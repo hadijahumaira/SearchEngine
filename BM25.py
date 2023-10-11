@@ -3,7 +3,7 @@ import pandas as pd
 from rank_bm25 import BM25Okapi
 
 # Menentukan direktori folder
-folder = 'corpus2'
+folder = 'corpus4'
 
 # Membuat list nama file dalam folder
 files = os.listdir(folder)
