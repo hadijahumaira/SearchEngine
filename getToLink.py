@@ -1,7 +1,7 @@
 import os
 
 # Ganti direktori_folder dengan direktori tempat Anda menyimpan file HTML
-direktori_folder = "halaman_crawling/halaman"
+direktori_folder = "corpus"
 
 # Ganti nama_file_txt dengan nama file teks yang Anda inginkan
 nama_file_txt = "links.txt"
@@ -42,7 +42,7 @@ def ekstrak_link(file_html):
 def tulis_ke_file_txt(links):
     with open(nama_file_txt, "w", encoding="utf-8") as f:
         for link in links:
-            f.write(f'"{link}",\n')
+            f.write(f'{link}\n')
 
 
 if __name__ == "__main__":

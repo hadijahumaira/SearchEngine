@@ -58,7 +58,7 @@ def index_txt_files(input_folder, output_file, index_file):
 
 
 def main():
-    input_folder = 'corpus2'
+    input_folder = 'corpus4'
     output_file = 'indexWord.txt'
     index_file = 'index2.txt'
     index_txt_files(input_folder, output_file, index_file)

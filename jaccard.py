@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 # Menentukan direktori folder
-folder = 'corpus2'
+folder = 'corpus4'
 
 # Membuat list nama file dalam folder
 files = os.listdir(folder)
@@ -35,7 +35,7 @@ def jaccard_similarity(query, document):
 
 
 # Mencari kata dalam dokumen dengan Jaccard Similarity
-search_word = 'contoh'
+search_word = 'bocah'
 similar_documents = []
 
 for i, document in enumerate(df['dokumen']):
@@ -47,4 +47,6 @@ for i, document in enumerate(df['dokumen']):
 similar_documents.sort(key=lambda x: x[1], reverse=True)
 print(f"Dokumen-dokumen yang mirip dengan kata '{search_word}':")
 for doc_name, similarity in similar_documents:
-    print(f"- {doc_name} (Similarity: {similarity})")
+    document_url = f"https://www.viva.co.id/berita/nasional/{doc_name.replace(' ', '_').replace('.txt', '')}"
+    print(
+        f"- <a href='{document_url}'>{doc_name}</a> (Similarity: {similarity})")
