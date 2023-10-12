@@ -47,12 +47,12 @@
 <body>
     <h1>Hasil Pencarian untuk Kata '{{ search_word }}'</h1>
     <ul>
-        {% for doc_name, similarity in similar_documents %}
+        {% for document in similar_documents %}
         <li>
-            <a href="https://www.viva.co.id/berita/nasional/{{ doc_name.replace(' ', '_').replace('.txt', '') }}">{{ doc_name }}</a>
-            (Similarity: {{ similarity }})
+            <a href="{{ document[2] }}">{{ document[0] }}</a>
+            (BM25 Score: {{ document[1] }})
         </li>
-        {% endfor %}
+        {% endfor %}    
     </ul>
     <a href="/" class="back-link">Kembali ke Halaman Pencarian</a>
 </body>

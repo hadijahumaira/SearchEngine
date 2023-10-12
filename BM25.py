@@ -1,39 +1,51 @@
+import re
 import os
 import pandas as pd
+from flask import Flask, request, render_template
 from rank_bm25 import BM25Okapi
+
+app = Flask(__name__)
 
 # Menentukan direktori folder
 folder = 'corpus4'
 
-# Membuat list nama file dalam folder
+# Membaca dokumen dan membuat DataFrame
 files = os.listdir(folder)
-
-# Membuat list path file dalam folder
 paths = [os.path.join(folder, file) for file in files]
-
-# Membaca isi dokumen dan melacak nama dokumen
 documents = []
-document_names = []  # Menyimpan nama dokumen yang mengandung kata tertentu
+document_names = []
 for path in paths:
     with open(path, 'r', encoding='utf-8') as f:
         content = f.read()
         documents.append(content)
         document_names.append(os.path.basename(path))
 
-# Membuat dataframe dari dokumen
 df = pd.DataFrame({'nama_dokumen': document_names, 'dokumen': documents})
 
 # Membangun indeks BM25
 corpus = df['dokumen'].str.split()
 bm25 = BM25Okapi(corpus)
 
-# Mencari kata dalam dokumen dengan BM25
-search_word = 'contoh'
-query = search_word.split()
-doc_scores = bm25.get_scores(query)
-
 # Menampilkan hasil pencarian berdasarkan skor BM25 tertinggi
-result_indices = doc_scores.argsort()[::-1]
-print(f"Dokumen-dokumen yang relevan dengan kata '{search_word}':")
-for index in result_indices:
-    print(f"- {df['nama_dokumen'][index]} (BM25 Score: {doc_scores[index]:.2f})")
+@app.route('/', methods=['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+        search_word = request.form['search_word']
+        query = search_word.split()
+        doc_scores = bm25.get_scores(query)
+        similar_documents = []
+        result_indices = doc_scores.argsort()[::-1]
+
+        for index in result_indices:
+            if doc_scores[index] > 0:
+                document_name = df['nama_dokumen'][index]
+                bm25_score = doc_scores[index]
+                link = f"https://www.viva.co.id/berita/nasional/{document_name.replace(' ', '_').replace('.txt', '')}"
+                similar_documents.append((document_name, bm25_score, link))
+
+        return render_template('results.html', search_word=search_word, similar_documents=similar_documents)
+
+    return render_template('search.html')
+
+if __name__ == '__main__':
+    app.run()
