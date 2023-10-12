@@ -43,7 +43,7 @@ def search():
 
         similar_documents.sort(key=lambda x: x[1], reverse=True)
 
-        return render_template('results.html', search_word=search_word, similar_documents=similar_documents)
+        return render_template('results2.html', search_word=search_word, similar_documents=similar_documents)
 
     return render_template('search.html')
 
